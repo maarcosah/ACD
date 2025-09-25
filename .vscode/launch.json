@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-HandlingFormSubmissionApplication<handling-form-submission>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.handling_form_submission.HandlingFormSubmissionApplication",
+            "projectName": "handling-form-submission",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
