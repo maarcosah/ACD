@@ -2,6 +2,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "JDBC1",
+            "request": "launch",
+            "mainClass": "JDBC1",
+            "projectName": ""
+        },
+        {
+            "type": "java",
+            "name": "Dom_parser",
+            "request": "launch",
+            "mainClass": "Dom_parser",
+            "projectName": ""
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-HandlingFormSubmissionApplication<handling-form-submission>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
