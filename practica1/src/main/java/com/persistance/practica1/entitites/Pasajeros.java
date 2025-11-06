@@ -1,7 +1,5 @@
 package com.persistance.practica1.entitites;
 
-import javax.annotation.processing.Generated;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
@@ -10,20 +8,20 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GenerationType;
 
 @Entity
-@Table
-
+@Table(name = "pasajeros")
 
 public class Pasajeros {
 
 
     public Pasajeros(){};
-    public Pasajeros(String nombre){
+    public Pasajeros(String nombre, String apellido){
         this.nombre = nombre;
+        this.apellido = apellido;
     };
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long idPasajeos;
+    Long idPasajeros;
 
     @Column(name="nombre", unique = true, length = 40)
     String nombre;
@@ -34,12 +32,12 @@ public class Pasajeros {
     @Column(name="direccion", length = 100)
     String direccion;
 
-    public Long getIdPasajeos() {
-        return idPasajeos;
+    public Long getIdPasajeros() {
+        return idPasajeros;
     }
 
-    public void setIdPasajeos(Long idPasajeos) {
-        this.idPasajeos = idPasajeos;
+    public void setIdPasajeros(Long idPasajeros) {
+        this.idPasajeros = idPasajeros;
     }
 
     public String getNombre() {
