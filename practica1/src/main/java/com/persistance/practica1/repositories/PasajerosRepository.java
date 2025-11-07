@@ -6,5 +6,5 @@ import com.persistance.practica1.entitites.Pasajeros;
 
 @Repository
 public interface PasajerosRepository extends CrudRepository<Pasajeros, Long>{
-    
+    <Optional>Pasajeros findFirstByNombre(String argumento);
 }
