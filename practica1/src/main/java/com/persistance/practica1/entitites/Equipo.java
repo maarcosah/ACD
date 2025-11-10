@@ -51,4 +51,10 @@ public class Equipo {
     public void setIdPasajeros(Long idPasajeros) {
         this.idPasajeros = idPasajeros;
     }
+    public List<Heroe> getHeroes() {
+        return heroes;
+    }
+    public void setHeroes(List<Heroe> heroes) {
+        this.heroes = heroes;
+    }
 }

@@ -31,7 +31,7 @@ public class Heroe {
 
     @ManyToOne
     @JoinColumn( name = "miEquipo", nullable = false )
-    Equipo Equipo;
+    Equipo miEquipo;
 
     public String getNombre() {
         return nombre;
@@ -50,5 +50,11 @@ public class Heroe {
     }
     public void setIdPasajeros(Long idPasajeros) {
         this.idPasajeros = idPasajeros;
+    }
+    public Equipo getMiEquipo() {
+        return miEquipo;
+    }
+    public void setMiEquipo(Equipo miEquipo) {
+        this.miEquipo = miEquipo;
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 
 import com.persistance.practica1.entitites.Heroe;
+import com.persistance.practica1.entitites.HeroeUpdateDTO;
 import com.persistance.practica1.repositories.HeroeRepository;
 
 import jakarta.transaction.Transactional;
@@ -27,7 +28,11 @@ public class HeroeService {
 
     // ESCRITURAS
     @Transactional
-    public void guardarHeroe(Heroe heroe){
-        repo.save(heroe);
+    public Heroe guardarHeroe(Heroe heroe){
+        return repo.save(heroe);
+    }
+    public void actualizar(Long id, HeroeUpdateDTO updateDTO) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'actualizar'");
     }
 }

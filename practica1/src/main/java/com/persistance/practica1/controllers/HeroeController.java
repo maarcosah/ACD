@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.persistance.practica1.entitites.Heroe;
 import com.persistance.practica1.services.HeroeService;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import com.persistance.practica1.entitites.HeroeUpdateDTO;
 
 @RestController
 @RequestMapping("/api/v1/heroes") 
@@ -35,4 +38,13 @@ public class HeroeController {
 
 
     // PUT
-}
+    @PutMapping("path/{id}")
+    public ResponseEntity<String> updateHeroe(@PathVariable Long id, @RequestBody HeroeUpdateDTO updateDTO){
+        Optional<Heroe> optionalHeroe = service.findFirstByNombre(id);
+        try {
+            service.actualizar(id, updateDTO);
+            return ResponseEntity.ok("Actualizado");
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+    }
+}}
