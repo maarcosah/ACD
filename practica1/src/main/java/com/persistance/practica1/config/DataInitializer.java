@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 import com.persistance.practica1.entitites.Equipo;
 import com.persistance.practica1.entitites.Heroe;
 import com.persistance.practica1.entitites.Pasajeros;
+import com.persistance.practica1.repositories.EquipoRepository;
+import com.persistance.practica1.repositories.HeroeRepository;
 import com.persistance.practica1.repositories.PasajerosRepository;
-import com.persistance.practica1.services.EquipoService;
-import com.persistance.practica1.services.HeroeService;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -18,10 +18,10 @@ public class DataInitializer implements CommandLineRunner {
     private PasajerosRepository pasajerosRepo;
 
     @Autowired
-    private HeroeService heroeService;
+    private HeroeRepository heroeRepo;
 
     @Autowired
-    private EquipoService equipoService;
+    private EquipoRepository equipoRepo;
 
     @Override
     public void run(String... args) throws Exception {
@@ -35,7 +35,7 @@ public class DataInitializer implements CommandLineRunner {
 
             // Crear equipo
             Equipo e1 = new Equipo("Los mejores", "Super fuerza");
-            equipoService.guardarEquipo(e1);
+            equipoRepo.save(e1);
 
             // Crear héroes
             Heroe h1 = new Heroe("Torrente", "dinero");
@@ -47,9 +47,9 @@ public class DataInitializer implements CommandLineRunner {
             Heroe h3 = new Heroe("Javi", "Tik Tok");
             h3.setMiEquipo(e1);
 
-            heroeService.guardarHeroe(h1);
-            heroeService.guardarHeroe(h2);
-            heroeService.guardarHeroe(h3);
+            heroeRepo.save(h1);
+            heroeRepo.save(h2);
+            heroeRepo.save(h3);
 
             System.out.println("✅ Datos iniciales cargados correctamente");
         } else {

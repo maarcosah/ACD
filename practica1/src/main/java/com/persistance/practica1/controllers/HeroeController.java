@@ -40,7 +40,6 @@ public class HeroeController {
     // PUT
     @PutMapping("path/{id}")
     public ResponseEntity<String> updateHeroe(@PathVariable Long id, @RequestBody HeroeUpdateDTO updateDTO){
-        Optional<Heroe> optionalHeroe = service.findFirstByNombre(id);
         try {
             service.actualizar(id, updateDTO);
             return ResponseEntity.ok("Actualizado");

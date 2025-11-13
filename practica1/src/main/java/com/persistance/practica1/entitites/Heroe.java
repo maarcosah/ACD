@@ -13,11 +13,9 @@ import jakarta.persistence.Table;
 @Table(name="Heroe")
 public class Heroe {
     
-    public Heroe(){};
-    public Heroe(String nombre, String superpoder){
-        this.nombre = nombre;
-        this.superpoder = superpoder;
-    };
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
     @Column(name="nombre", unique = true, length = 40)
     String nombre;
@@ -25,13 +23,15 @@ public class Heroe {
     @Column(name="superpoder", length = 40)
     String superpoder;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long idPasajeros;
-
     @ManyToOne
     @JoinColumn( name = "miEquipo", nullable = false )
     Equipo miEquipo;
+    
+    public Heroe(){};
+    public Heroe(String nombre, String superpoder){
+        this.nombre = nombre;
+        this.superpoder = superpoder;
+    };
 
     public String getNombre() {
         return nombre;
@@ -46,10 +46,10 @@ public class Heroe {
         this.superpoder = superpoder;
     }
     public Long getIdPasajeros() {
-        return idPasajeros;
+        return this.id;
     }
-    public void setIdPasajeros(Long idPasajeros) {
-        this.idPasajeros = idPasajeros;
+    public void setIdPasajeros(Long id) {
+        this.id = id;
     }
     public Equipo getMiEquipo() {
         return miEquipo;
