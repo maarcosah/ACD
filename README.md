@@ -31,4 +31,3 @@ cd practica1
 ./gradlew.bat clean build
 ```
 
-Si quieres que aplique cambios adicionales (actualizar toolchains, añadir configuración de maven-toolchains.xml, ejecutar builds y arreglar fallos detectados), dime y prosigo.
