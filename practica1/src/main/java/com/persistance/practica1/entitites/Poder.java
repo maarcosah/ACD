@@ -1,38 +1,40 @@
 package com.persistance.practica1.entitites;
 
-import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import java.util.List;
 
 @Entity
-@Table(name="Equipos")
-public class Equipo {
- 
-    public Equipo(){};
-    public Equipo(String nombre, String descripcion){
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-    };
+@Table(name = "Poderes")
+public class Poder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="nombre", unique = true, nullable = false, length = 100)
+    @Column(name = "nombre", unique = true, nullable = false, length = 100)
     private String nombre;
 
-    @Column(name="descripcion", length = 255)
+    @Column(name = "descripcion", length = 255)
     private String descripcion;
 
-    @OneToMany(mappedBy="miEquipo")
+    @ManyToMany(mappedBy = "poderes")
     private List<Heroe> heroes;
 
+    // Constructores
+    public Poder() {}
+
+    public Poder(String nombre, String descripcion) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+    }
+
+    // Getters y Setters
     public Long getId() {
         return id;
     }
@@ -44,6 +46,7 @@ public class Equipo {
     public String getNombre() {
         return nombre;
     }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -56,22 +59,17 @@ public class Equipo {
         this.descripcion = descripcion;
     }
 
-    public Long getIdPasajeros() {
-        return id;
-    }
-    public void setIdPasajeros(Long idPasajeros) {
-        this.id = idPasajeros;
-    }
     public List<Heroe> getHeroes() {
         return heroes;
     }
+
     public void setHeroes(List<Heroe> heroes) {
         this.heroes = heroes;
     }
 
     @Override
     public String toString() {
-        return "Equipo{" +
+        return "Poder{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
