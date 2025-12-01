@@ -50,6 +50,34 @@ public class JDBC {
         return valores;
     }
 
+    // Método 3: Devuelve una lista con los datos del registro en la posición numRegistro
+    public static List<String> selectRowList(int numRegistro) {
+        List<String> fila = new ArrayList<>();
+        String query = "SELECT * FROM fichero";
+
+        try (Connection conexion = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/agenda", "root", "");
+             PreparedStatement ps = conexion.prepareStatement(query, 
+                 ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.absolute(numRegistro)) {
+                ResultSetMetaData metaData = rs.getMetaData();
+                int numColumnas = metaData.getColumnCount();
+
+                for (int i = 1; i <= numColumnas; i++) {
+                    fila.add(rs.getString(i));
+                }
+            } else {
+                System.out.println("El registro " + numRegistro + " no existe.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error en selectRowList: " + e.getMessage());
+        }
+
+        return fila;
+    }
+
     public static void main(String[] args) {
         // Prueba del método selectCampo
         String valor = selectCampo(2, "NOMBRE");
@@ -62,6 +90,13 @@ public class JDBC {
         System.out.println("Lista de nombres:");
         for (String nombre : nombres) {
             System.out.println(nombre);
+        }
+
+        // Prueba del método selectRowList
+        List<String> fila = selectRowList(2);
+        System.out.println("Datos del registro 2:");
+        for (String dato : fila) {
+            System.out.println(dato);
         }
     }
 }
