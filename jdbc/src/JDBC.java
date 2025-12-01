@@ -168,6 +168,27 @@ public class JDBC {
         }
     }
 
+    // Método 6: Limpia los datos del registro indicado
+    public static void delete(int row) {
+        String query = "DELETE FROM fichero WHERE rowid = ?";
+
+        try (Connection conexion = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/agenda", "root", "");
+             PreparedStatement ps = conexion.prepareStatement(query)) {
+
+            ps.setInt(1, row);
+
+            int filasAfectadas = ps.executeUpdate();
+            if (filasAfectadas > 0) {
+                System.out.println("Registro " + row + " eliminado correctamente.");
+            } else {
+                System.out.println("El registro " + row + " no existe.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error en delete: " + e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
         // Prueba del método selectCampo
         String valor = selectCampo(2, "NOMBRE");
@@ -204,5 +225,8 @@ public class JDBC {
 
         // Prueba del método update(int, String, String)
         update(2, "NOMBRE", "Marco Nuevo");
+
+        // Prueba del método delete
+        delete(2);
     }
 }
