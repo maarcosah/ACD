@@ -110,6 +110,64 @@ public class JDBC {
         return fila;
     }
 
+    // Método 5.1: Modifica todos los campos de un registro usando un Map
+    public static void update(int row, Map<String, String> datos) {
+        StringBuilder setClauses = new StringBuilder();
+        int index = 0;
+
+        for (String campo : datos.keySet()) {
+            if (index > 0) {
+                setClauses.append(", ");
+            }
+            setClauses.append(campo).append(" = ?");
+            index++;
+        }
+
+        String query = "UPDATE fichero SET " + setClauses.toString() + " WHERE rowid = ?";
+
+        try (Connection conexion = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/agenda", "root", "");
+             PreparedStatement ps = conexion.prepareStatement(query)) {
+
+            int paramIndex = 1;
+            for (String valor : datos.values()) {
+                ps.setString(paramIndex++, valor);
+            }
+            ps.setInt(paramIndex, row);
+
+            int filasAfectadas = ps.executeUpdate();
+            if (filasAfectadas > 0) {
+                System.out.println("Registro " + row + " actualizado correctamente.");
+            } else {
+                System.out.println("El registro " + row + " no existe.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error en update(Map): " + e.getMessage());
+        }
+    }
+
+    // Método 5.2: Modifica un solo campo de un registro
+    public static void update(int row, String campo, String valor) {
+        String query = "UPDATE fichero SET " + campo + " = ? WHERE rowid = ?";
+
+        try (Connection conexion = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/agenda", "root", "");
+             PreparedStatement ps = conexion.prepareStatement(query)) {
+
+            ps.setString(1, valor);
+            ps.setInt(2, row);
+
+            int filasAfectadas = ps.executeUpdate();
+            if (filasAfectadas > 0) {
+                System.out.println("Registro " + row + " actualizado correctamente.");
+            } else {
+                System.out.println("El registro " + row + " no existe.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error en update(String): " + e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
         // Prueba del método selectCampo
         String valor = selectCampo(2, "NOMBRE");
@@ -137,5 +195,14 @@ public class JDBC {
         for (Map.Entry<String, String> entrada : filaMap.entrySet()) {
             System.out.println(entrada.getKey() + ": " + entrada.getValue());
         }
+
+        // Prueba del método update(int, Map)
+        Map<String, String> datosActualizar = new HashMap<>();
+        datosActualizar.put("NOMBRE", "Marco Actualizado");
+        datosActualizar.put("TELEFONO", "123456789");
+        update(2, datosActualizar);
+
+        // Prueba del método update(int, String, String)
+        update(2, "NOMBRE", "Marco Nuevo");
     }
 }
