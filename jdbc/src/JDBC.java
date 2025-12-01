@@ -1,6 +1,8 @@
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JDBC {
 
@@ -78,6 +80,36 @@ public class JDBC {
         return fila;
     }
 
+    // Método 4: Devuelve un HashMap con los datos del registro en la posición numRegistro
+    public static Map<String, String> selectRowMap(int numRegistro) {
+        Map<String, String> fila = new HashMap<>();
+        String query = "SELECT * FROM fichero";
+
+        try (Connection conexion = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/agenda", "root", "");
+             PreparedStatement ps = conexion.prepareStatement(query, 
+                 ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.absolute(numRegistro)) {
+                ResultSetMetaData metaData = rs.getMetaData();
+                int numColumnas = metaData.getColumnCount();
+
+                for (int i = 1; i <= numColumnas; i++) {
+                    String nombreColumna = metaData.getColumnName(i);
+                    String valor = rs.getString(i);
+                    fila.put(nombreColumna, valor);
+                }
+            } else {
+                System.out.println("El registro " + numRegistro + " no existe.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error en selectRowMap: " + e.getMessage());
+        }
+
+        return fila;
+    }
+
     public static void main(String[] args) {
         // Prueba del método selectCampo
         String valor = selectCampo(2, "NOMBRE");
@@ -97,6 +129,13 @@ public class JDBC {
         System.out.println("Datos del registro 2:");
         for (String dato : fila) {
             System.out.println(dato);
+        }
+
+        // Prueba del método selectRowMap
+        Map<String, String> filaMap = selectRowMap(2);
+        System.out.println("Datos del registro 2 (HashMap):");
+        for (Map.Entry<String, String> entrada : filaMap.entrySet()) {
+            System.out.println(entrada.getKey() + ": " + entrada.getValue());
         }
     }
 }
