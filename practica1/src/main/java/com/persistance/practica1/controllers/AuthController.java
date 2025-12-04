@@ -55,7 +55,7 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
         try {
             // Autenticar usuario con las credenciales proporcionadas
-            Authentication authentication = authenticationManager.authenticate(
+            authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             authRequest.username,
                             authRequest.password));
