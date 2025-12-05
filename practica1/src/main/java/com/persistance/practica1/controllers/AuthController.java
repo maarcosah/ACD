@@ -19,10 +19,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * Controlador para autenticación y gestión de usuarios con JWT
- * Proporciona endpoints: /login, /register, /me
- */
 @RestController
 @RequestMapping("/api/v1/auth")
 @CrossOrigin(origins = "*")
@@ -39,8 +35,6 @@ public class AuthController {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsServiceImpl;
-
-    // ==================== DTOs ====================
 
     /**
      * DTO para petición de login
