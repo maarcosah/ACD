@@ -1,6 +1,8 @@
 package com.persistance.practica1.util;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.crypto.SecretKey;
 
@@ -15,6 +17,10 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 
+/**
+ * Utilidad para gestión de tokens JWT
+ * Genera, valida y extrae información de tokens JWT con soporte de roles
+ */
 @Component
 public class JwtPropierties {
 
@@ -24,12 +30,21 @@ public class JwtPropierties {
     @Value("${jwt.expiration}")
     private Long expiration;
 
-    
+    /**
+     * Obtiene la clave secreta para firmar tokens
+     * 
+     * @return SecretKey - Clave HMAC-SHA
+     */
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    
+    /**
+     * Genera un nuevo token JWT para un usuario (sin roles)
+     * 
+     * @param username - Nombre del usuario
+     * @return String - Token JWT generado
+     */
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
@@ -38,7 +53,30 @@ public class JwtPropierties {
                 .signWith(getSigningKey())
                 .compact();
     }
-    
+
+    /**
+     * Genera un nuevo token JWT para un usuario con roles
+     * 
+     * @param username - Nombre del usuario
+     * @param roles    - Colección de roles del usuario
+     * @return String - Token JWT generado con roles
+     */
+    public String generateToken(String username, Collection<String> roles) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .claim("roles", roles)
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSigningKey())
+                .compact();
+    }
+
+    /**
+     * Extrae todas las reclamaciones del token
+     * 
+     * @param token - Token JWT
+     * @return Claims - Reclamaciones del token
+     */
     private Claims getClaimsFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
@@ -46,19 +84,44 @@ public class JwtPropierties {
                 .parseClaimsJws(token)
                 .getBody();
     }
-    
+
+    /**
+     * Obtiene el nombre de usuario del token
+     * 
+     * @param token - Token JWT
+     * @return String - Nombre de usuario
+     */
     public String getUsernameFromToken(String token) {
         return getClaimsFromToken(token).getSubject();
     }
-    
-    public String getRolesFromToken(String token) {
-        return getClaimsFromToken(token).get("roles", String.class);
+
+    /**
+     * Obtiene los roles del token como List
+     * 
+     * @param token - Token JWT
+     * @return List - Lista de roles del usuario
+     */
+    @SuppressWarnings("unchecked")
+    public List<String> getRolesFromToken(String token) {
+        return getClaimsFromToken(token).get("roles", List.class);
     }
-    
+
+    /**
+     * Obtiene la fecha de expiración del token
+     * 
+     * @param token - Token JWT
+     * @return Date - Fecha de expiración
+     */
     public Date getExpirationDateFromToken(String token) {
         return getClaimsFromToken(token).getExpiration();
     }
 
+    /**
+     * Valida que el token sea válido y no esté expirado
+     * 
+     * @param token - Token JWT
+     * @return boolean - true si es válido, false si no
+     */
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
@@ -80,6 +143,12 @@ public class JwtPropierties {
         return false;
     }
 
+    /**
+     * Verifica si el token está expirado
+     * 
+     * @param token - Token JWT
+     * @return boolean - true si está expirado, false si no
+     */
     public boolean isTokenExpired(String token) {
         try {
             Date tokenExpiration = getExpirationDateFromToken(token);
